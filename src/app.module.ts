@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BlogModule } from './blog/blog.module';
+import { CommentsModule } from './comments/comments.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
             ssl: isProduction ? { rejectUnauthorize: false } : null,
           },
           type: 'postgres',
+          // logging: true,
           autoLoadEntities: true,
           synchronize: true,
           host: configService.get('DB_HOST'),
@@ -32,7 +35,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         };
       },
     }),
+    BlogModule,
     AuthModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

@@ -35,12 +35,12 @@ export class AuthService {
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { id: user.id };
       const access_token = await this.jwtService.sign(payload);
-      const { first_name, last_name, phone } = user;
+      // const { first_name, last_name, phone } = user;
       return responseHandler({
         success: true,
         statusCode: 200,
         message: 'Login successful',
-        data: { first_name, last_name, email, phone, access_token },
+        data: { /*first_name, last_name, */ email, /*phone,*/ access_token },
       });
     } else {
       throw new UnauthorizedException('Invalid email or password');
