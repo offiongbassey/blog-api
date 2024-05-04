@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserStatus } from './user.status.enum';
+import { Blog } from 'src/blog/blog.entity';
+import { Comment } from 'src/comments/comment.entity';
 
 @Entity()
 export class User {
@@ -26,4 +34,23 @@ export class User {
 
   @Column()
   is_active: boolean;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  updated_at: Date;
+
+  @OneToMany((_type) => Blog, (blog) => blog.user, { eager: true })
+  blogs: Blog[];
+
+  @OneToMany((_type) => Comment, (comment) => comment.user, { eager: true })
+  comments: Comment[];
+
 }
